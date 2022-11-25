@@ -26,14 +26,14 @@
 
           <Paragraph text="Height:" weight="regular" class="key q-mt-md" />
           <Paragraph
-            :text="`${pokemon.height}`"
+            :text="`${convertHeight(pokemon.height)}`"
             weight="regular"
             class="value q-mt-md"
           />
 
           <Paragraph text="Weight:" weight="regular" class="key q-mt-md" />
           <Paragraph
-            :text="`${pokemon.weight}`"
+            :text="`${convertWeight(pokemon.weight)}`"
             weight="regular"
             class="value q-mt-md"
           />
@@ -231,6 +231,22 @@ export default {
     async getMoves() {
       const data = await getMoves(this.pokemon.moves);
       this.moves = data;
+    },
+    convertHeight(height) {
+      const feet = Number((height * 10) / 2.54 / 12)
+        .toFixed(1)
+        .replace(".", "'");
+      const inches = '."' + Math.round((height / 12) * 10).toString();
+      const cms = " (" + (height / 10).toString() + "cm)";
+
+      return feet + inches + cms;
+    },
+    convertWeight(weight) {
+      const kilograms = (weight / 10).toString() + "kg";
+      const pounds =
+        " (" + ((weight / 10) * 2.20462).toFixed(1).toString() + "lbs)";
+
+      return kilograms + pounds;
     },
   },
   mounted() {
