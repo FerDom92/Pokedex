@@ -6,17 +6,15 @@
 
 <script>
 export default {
-
-  name: 'IconItem',
+  name: "IconItem",
 
   props: {
     name: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
-}
-
+};
 </script>
 
 <style scoped>

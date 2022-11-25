@@ -4,16 +4,15 @@
 
 <script>
 export default {
-  name: 'TitleSecondary',
+  name: "TitleSecondary",
 
   props: {
     text: {
       type: String,
-      required: true
-    }
-  }
-
-}
+      required: true,
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -23,6 +22,5 @@ export default {
   line-height: 28px;
   font-weight: 500;
   color: $black;
-
 }
 </style>

@@ -4,19 +4,19 @@
 
 <script>
 export default {
-  name: 'CaptionText',
+  name: "CaptionText",
 
   props: {
     text: {
       type: String,
-      required: true
+      required: true,
     },
     weight: {
       type: String,
-      default: 'regular'
-    }
+      default: "regular",
+    },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

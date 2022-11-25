@@ -4,16 +4,15 @@
 
 <script>
 export default {
-  name: 'SubTitlePrimary',
+  name: "SubTitlePrimary",
 
   props: {
     text: {
       type: String,
-      required: true
-    }
-  }
-
-}
+      required: true,
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

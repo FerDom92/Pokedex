@@ -4,23 +4,42 @@
     <TitleH2 text="Filtrer pokemon list" class="q-mt-lg q-mb-xl q-ml-md" />
 
     <q-form class="q-gutter-md q-px-md">
-      <q-input filled type="number" v-model="movementToSearch" label="Type movement number" />
+      <q-input
+        filled
+        type="number"
+        v-model="movementToSearch"
+        label="Type movement number"
+      />
 
-      <q-input filled type="number" v-model="experienceToSearch" label="Type the experience level" />
+      <q-input
+        filled
+        type="number"
+        v-model="experienceToSearch"
+        label="Type the experience level"
+      />
 
       <div style="min-width: 250px">
-
-        <q-select filled v-model="optionSelected" multiple :options="options" use-chips stack-label
-          label="Pokemon Type">
+        <q-select
+          filled
+          v-model="optionSelected"
+          multiple
+          :options="options"
+          use-chips
+          stack-label
+          label="Pokemon Type"
+        >
           <template v-slot:opt>
             <q-chip>{{ opt }}</q-chip>
           </template>
         </q-select>
-
       </div>
 
       <div class="button-wrapper">
-        <ButtonSecondary text="Cancel" class="button-seccondary" @click="openAndCloseFilter()" />
+        <ButtonSecondary
+          text="Cancel"
+          class="button-seccondary"
+          @click="openAndCloseFilter()"
+        />
         <ButtonPrimary text="Filter" @click="filterData()" />
       </div>
     </q-form>
@@ -28,23 +47,22 @@
 </template>
 
 <script>
+import axios from "axios";
+import { mapActions } from "pinia";
+import { usePokemonStore } from "src/stores/pokemonStore";
 
-import axios from 'axios'
-import { mapActions } from 'pinia';
-import { usePokemonStore } from 'src/stores/pokemonStore';
-
-import Icon from 'src/components/ui/Icon.vue';
-import ButtonPrimary from './ui/buttons/ButtonPrimary.vue';
-import ButtonSecondary from './ui/buttons/ButtonSecondary.vue';
-import TitleH2 from './ui/text/TitleH2.vue';
+import Icon from "src/components/ui/Icon.vue";
+import ButtonPrimary from "./ui/buttons/ButtonPrimary.vue";
+import ButtonSecondary from "./ui/buttons/ButtonSecondary.vue";
+import TitleH2 from "./ui/text/TitleH2.vue";
 
 export default {
-  name: 'FilterForm',
+  name: "FilterForm",
   components: {
     Icon,
     TitleH2,
     ButtonPrimary,
-    ButtonSecondary
+    ButtonSecondary,
   },
   data() {
     return {
@@ -52,56 +70,59 @@ export default {
       experienceToSearch: null,
       optionSelected: [],
       options: [
-        'Grass',
-        'Poison',
-        'Bug',
-        'Dark',
-        'Dragon',
-        'Electric',
-        'Fairy',
-        'Fighting',
-        'Fire',
-        'Flying',
-        'Ghost',
-        'Ground',
-        'Ice',
-        'Normal',
-        'Psychic',
-        'Rock',
-        'Stell',
-        'Water',
+        "Grass",
+        "Poison",
+        "Bug",
+        "Dark",
+        "Dragon",
+        "Electric",
+        "Fairy",
+        "Fighting",
+        "Fire",
+        "Flying",
+        "Ghost",
+        "Ground",
+        "Ice",
+        "Normal",
+        "Psychic",
+        "Rock",
+        "Stell",
+        "Water",
       ],
-    }
+    };
   },
 
   methods: {
-    ...mapActions(usePokemonStore, ['openAndCloseFilter', 'pokemonsFiltered']),
+    ...mapActions(usePokemonStore, ["openAndCloseFilter", "pokemonsFiltered"]),
     async filterData() {
-      this.$q.loading.show()
-      const pokemonsToShow = []
+      this.$q.loading.show();
+      const pokemonsToShow = [];
 
-      const { data } = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=100')
+      const { data } = await axios.get(
+        "https://pokeapi.co/api/v2/pokemon?limit=100"
+      );
 
       for (let index = 0; index < data.results.length; index++) {
+        const dataPokemon = await axios.get(data.results[index].url);
 
-        const dataPokemon = await axios.get(data.results[index].url)
-
-        const exists = this.optionSelected.filter(elem => elem.toLowerCase() === dataPokemon.data.types[0].type.name);
+        const exists = this.optionSelected.filter(
+          (elem) => elem.toLowerCase() === dataPokemon.data.types[0].type.name
+        );
 
         if (
           dataPokemon.data.moves.length == this.movementToSearch ||
           dataPokemon.data.base_experience == this.experienceToSearch ||
           exists.length
         ) {
-          pokemonsToShow.push(dataPokemon.data)
+          pokemonsToShow.push(dataPokemon.data);
         }
       }
-      this.pokemonsFiltered(pokemonsToShow)
-      this.$q.loading.hide()
-      this.openAndCloseFilter()
+      this.pokemonsFiltered(pokemonsToShow);
+      this.$q.loading.hide();
+      this.openAndCloseFilter();
     },
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -123,7 +144,7 @@ export default {
 }
 
 .button-seccondary {
-  background: #D0D7F9;
+  background: #d0d7f9;
 }
 
 .chip {

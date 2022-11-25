@@ -4,20 +4,20 @@
 
 <script>
 export default {
-  name: 'ParagraphText',
+  name: "ParagraphText",
 
   props: {
     text: {
       type: String,
-      required: true
+      required: true,
     },
     weight: {
       type: String,
       required: true,
-      default: 'regular'
-    }
-  }
-}
+      default: "regular",
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -5,21 +5,21 @@
 </template>
 
 <script>
-import SubTitleSecondary from '../text/SubTitleSecondary.vue';
+import SubTitleSecondary from "../text/SubTitleSecondary.vue";
 
 export default {
-  name: 'ButtonSecondary',
+  name: "ButtonSecondary",
   components: {
-    SubTitleSecondary
+    SubTitleSecondary,
   },
 
   props: {
     text: {
       type: String,
-      required: true
+      required: true,
     },
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>

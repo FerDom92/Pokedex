@@ -5,20 +5,20 @@
 </template>
 
 <script>
-import { SubTitleSecondary } from '../text'
+import { SubTitleSecondary } from "../text";
 export default {
-  name: 'ButtonPrimary',
+  name: "ButtonPrimary",
   components: {
-    SubTitleSecondary
+    SubTitleSecondary,
   },
 
   props: {
     text: {
       type: String,
-      required: true
+      required: true,
     },
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>
