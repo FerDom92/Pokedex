@@ -68,7 +68,7 @@
         <div class="row">
           <div class="row chart q-mt-lg">
             <SubTitle text="Base Stats" />
-            <canvas id="statsChart" width="400" height="200"></canvas>
+            <Chart :pokemon="pokemon" />
           </div>
         </div>
       </q-tab-panel>
@@ -89,9 +89,10 @@
 
 <script>
 import { Paragraph, SubTitle } from "./ui/text";
-import Chart from "chart.js/auto";
+
 import BlockCard from "./ui/blocks/BlockCard.vue";
 import { getMoves } from "src/utils/getMoves";
+import Chart from "./Chart.vue";
 
 export default {
   name: "TabS",
@@ -99,6 +100,7 @@ export default {
     Paragraph,
     SubTitle,
     BlockCard,
+    Chart,
   },
   props: {
     pokemon: {
@@ -107,10 +109,8 @@ export default {
   },
   data() {
     return {
-      active: true,
       tab: "about",
       moves: [],
-      chart: null,
     };
   },
   methods: {
@@ -177,57 +177,6 @@ export default {
           break;
       }
     },
-    showStats() {
-      const ctx = document.getElementById("statsChart");
-
-      this.chart = new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: [
-            "Speed",
-            "Sp Defense",
-            "Sp Attack",
-            "Defense",
-            "Attack",
-            "HP",
-          ],
-          datasets: [
-            {
-              label: "",
-              data: [
-                this.pokemon.stats[5].base_stat,
-                this.pokemon.stats[4].base_stat,
-                this.pokemon.stats[3].base_stat,
-                this.pokemon.stats[2].base_stat,
-                this.pokemon.stats[1].base_stat,
-                this.pokemon.stats[0].base_stat,
-              ],
-              backgroundColor: [
-                "rgba(7, 42, 200, 1)",
-                "rgba(7, 42, 200, 1)",
-                "rgba(7, 42, 200, 1)",
-                "rgba(7, 42, 200, 1)",
-                "rgba(7, 42, 200, 1)",
-                "rgba(7, 42, 200, 1)",
-              ],
-              borderWidth: 0,
-            },
-          ],
-        },
-        options: {
-          indexAxis: "y",
-          plugins: {
-            legend: {
-              labels: {
-                font: {
-                  size: 0,
-                },
-              },
-            },
-          },
-        },
-      });
-    },
     async getMoves() {
       const data = await getMoves(this.pokemon.moves);
       this.moves = data;
@@ -250,7 +199,6 @@ export default {
     },
   },
   mounted() {
-    this.showStats();
     this.getMoves();
   },
 };

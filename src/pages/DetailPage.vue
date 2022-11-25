@@ -25,8 +25,6 @@
 
 <script>
 import { pokeApi } from "src/boot/axios";
-import { usePokemonStore } from "src/stores/pokemonStore";
-import { mapState } from "pinia";
 import { TitleH1, TitleH2 } from "src/components/ui/text";
 import Tabs from "src/components/Tabs.vue";
 import Icon from "src/components/ui/Icon.vue";
@@ -43,9 +41,6 @@ export default {
     TitleH1,
     TitleH2,
     Icon,
-  },
-  computed: {
-    ...mapState(usePokemonStore, ["pokemonSelected"]),
   },
   methods: {
     goBack() {
