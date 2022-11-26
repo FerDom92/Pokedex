@@ -74,13 +74,17 @@
       </q-tab-panel>
 
       <q-tab-panel name="moves">
-        <div class="grid-moves">
+        <div class="grid-moves" v-if="!loadingMoves">
           <BlockCard
             v-for="(move, index) in moves"
             :key="index"
             :text="`${move.name}`"
             :style="`background-color: ${checkColor(move.type)}`"
           />
+        </div>
+
+        <div v-else>
+          <p class="text-center q-mt-lg">Cargando...</p>
         </div>
       </q-tab-panel>
     </q-tab-panels>
@@ -111,6 +115,7 @@ export default {
     return {
       tab: "about",
       moves: [],
+      loadingMoves: false,
     };
   },
   methods: {
@@ -178,8 +183,16 @@ export default {
       }
     },
     async getMoves() {
-      const data = await getMoves(this.pokemon.moves);
-      this.moves = data;
+      this.loadingMoves = true;
+
+      try {
+        const data = await getMoves(this.pokemon.moves);
+        this.moves = data;
+      } catch (error) {
+        console.log(error);
+      }
+
+      this.loadingMoves = false;
     },
     convertHeight(height) {
       const feet = Number((height * 10) / 2.54 / 12)
