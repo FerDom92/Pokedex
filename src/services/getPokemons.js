@@ -8,7 +8,7 @@ export const getPokemons = async (current) => {
 
   try {
     const amountPokemons = await pokeApi.get(
-      `/pokemon/?offset=${current}&limit=20`
+      `${process.env.API.ENDPOINT_POKEMON}/?offset=${current}&limit=20`
     );
 
     amountPokemons.data.results.forEach((item) => {
@@ -29,7 +29,9 @@ export const getPokemons = async (current) => {
     const isLoaded = loadedPokemonsId.indexOf(idList[index]);
 
     if (isLoaded !== -1) {
-      const { data } = await pokeApi(`/pokemon/${idList[index]}`);
+      const { data } = await pokeApi(
+        `${process.env.API.ENDPOINT_POKEMON}/${idList[index]}`
+      );
       loadedPokemonsData.push(data);
     }
   }

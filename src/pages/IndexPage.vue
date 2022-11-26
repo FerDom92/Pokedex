@@ -128,7 +128,9 @@ export default {
       } else {
         try {
           const { data } = await pokeApi(
-            `/pokemon/${this.pokemonToSearch.toLocaleLowerCase()}`
+            `${
+              process.env.API.ENDPOINT_POKEMON
+            }/${this.pokemonToSearch.toLocaleLowerCase()}`
           );
 
           this.pokemonsFiltered([data]);

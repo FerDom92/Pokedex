@@ -7,7 +7,9 @@ import axios from "axios";
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const pokeApi = axios.create({ baseURL: "https://pokeapi.co/api/v2" });
+const pokeApi = axios.create({
+  baseURL: process.env.API.ENDPOINT_POKEMON_BASE,
+});
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api

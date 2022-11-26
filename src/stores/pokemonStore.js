@@ -4,8 +4,8 @@ import { getPokemons } from "src/services/getPokemons";
 export const usePokemonStore = defineStore("pokemons", {
   state: () => ({
     pokemons: [],
-    pokemonSelected: null,
     filterIsOpen: false,
+    loading: false,
   }),
   getters: {},
   actions: {
@@ -20,7 +20,14 @@ export const usePokemonStore = defineStore("pokemons", {
       this.filterIsOpen = !this.filterIsOpen;
     },
     pokemonsFiltered(pokemons) {
-      this.pokemons = pokemons;
+      if (pokemons.length) {
+        this.pokemons = pokemons;
+      }
+
+      this.loading = false;
+    },
+    isLoading(value) {
+      this.loading = value;
     },
   },
 });

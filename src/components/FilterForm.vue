@@ -93,30 +93,54 @@ export default {
   },
 
   methods: {
-    ...mapActions(usePokemonStore, ["openAndCloseFilter", "pokemonsFiltered"]),
+    ...mapActions(usePokemonStore, [
+      "openAndCloseFilter",
+      "pokemonsFiltered",
+      "isLoading",
+    ]),
     async filterData() {
       this.$q.loading.show();
+      this.isLoading(true);
       const pokemonsToShow = [];
+      const allPromises = [];
 
       const { data } = await axios.get(
-        "https://pokeapi.co/api/v2/pokemon?limit=100"
+        `${process.env.API.ENDPOINT_POKEMON_BASE}/pokemon?limit=200`
       );
 
       for (let index = 0; index < data.results.length; index++) {
-        const dataPokemon = await axios.get(data.results[index].url);
+        const dataPokemon = new Promise((resolve) => {
+          resolve(axios.get(data.results[index].url));
+        });
 
-        const exists = this.optionSelected.filter(
-          (elem) => elem.toLowerCase() === dataPokemon.data.types[0].type.name
-        );
-
-        if (
-          dataPokemon.data.moves.length == this.movementToSearch ||
-          dataPokemon.data.base_experience == this.experienceToSearch ||
-          exists.length
-        ) {
-          pokemonsToShow.push(dataPokemon.data);
-        }
+        allPromises.push(dataPokemon);
       }
+
+      await Promise.allSettled(allPromises)
+        .then((resp) => {
+          for (let index = 0; index < resp.length; index++) {
+            if (resp[index].status === "fulfilled") {
+              const exists = this.optionSelected.filter(
+                (elem) =>
+                  elem.toLowerCase() ===
+                  resp[index].value.data.types[0].type.name
+              );
+
+              if (
+                resp[index].value.data.base_experience ==
+                  this.experienceToSearch ||
+                resp[index].value.data.moves.length == this.movementToSearch ||
+                exists.length
+              ) {
+                pokemonsToShow.push(resp[index].value.data);
+              }
+            }
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
       this.pokemonsFiltered(pokemonsToShow);
       this.$q.loading.hide();
       this.openAndCloseFilter();

@@ -49,7 +49,9 @@ export default {
     async getPokemon() {
       this.$q.loading.show();
       const name = this.$route.path.split("/").pop();
-      const { data } = await pokeApi(`/pokemon/${name}`);
+      const { data } = await pokeApi(
+        `${process.env.API.ENDPOINT_POKEMON}/${name}`
+      );
 
       this.pokemon = data;
 
